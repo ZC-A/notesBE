@@ -1,0 +1,69 @@
+# This is a basic configuration for golangci-lint
+# More options and linters can be enabled by modifying this file
+
+run:
+  # Timeout for the entire linter run.
+  timeout: 5m
+
+  # Which directories to include and exclude during the linting process
+  # include:
+  #   - ./...
+  # exclude:
+  #   - vendor
+
+linters-settings:
+  # Configuration specific to individual linters
+  gofmt:
+    simplify: true
+
+  gocyclo:
+    min-complexity: 15
+
+  # Example of configuring the linter for error strings
+  errorlint:
+    errorf: true
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gofmt
+    - goimports
+    - goconst
+    - gocyclo
+
+  disable:
+    - typecheck  # If you want to disable typecheck, though not recommended
+
+issues:
+  # List of regexes of issue texts to exclude. The first match wins.
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+      text: ".*error is not checked.*"
+
+  # Exclude files and directories from analysis
+  exclude-use-default: false
+  # exclude:
+
+
+  # List of patterns to ignore, these can be applied to either
+  # the whole issue text or just the issue lines.
+  # exclude:
+  #   - 'print("This is a test")'
+
+output:
+  # options for output format
+  # options for sorting issues
+  sort-results: true
+
+# Additional settings for caching and performance tuning
+cache:
+  enabled: true
+  dir: ~/.cache/golangci-lint
+
+# Enable fast linting for local development
+fast: false
