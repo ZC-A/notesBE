@@ -12,5 +12,4 @@ trace:
   otlp:
     host: 127.0.0.1
     port: 4317
-    token:
     type: grpc
