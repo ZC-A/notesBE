@@ -29,11 +29,11 @@ jobs:
 
     - name: Install commitlint
       run: |
-       npm install --save-dev @commitlint/{cli,config-conventional}
+       npm install --save-dev @commitlint/cli @commitlint/config-conventional
 
     - name: Lint commit messages
       run: |
-       git log -1 --pretty=%B | npx commitlint --config @commitlint/config-conventional
+       git log -1 --pretty=%B | npx commitlint
 
     - name: Set up Python and pre-commit
       run: |
