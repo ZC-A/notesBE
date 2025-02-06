@@ -12,15 +12,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Set up Python and install pre-commit
       run: |
         python3 -m venv venv
         source venv/bin/activate
         pip install --upgrade pip
-
-    - name: Install pre-commit and dependencies
-      run: |
-        source venv/bin/activate
         pip install pre-commit
         pre-commit install-hooks
 
@@ -29,22 +25,34 @@ jobs:
         source venv/bin/activate
         pre-commit run --all-files
 
+  go-checks:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
         go-version: '1.23'
 
-    - name: Install GolangCI dependencies
+    - name: Install GolangCI-Lint
       run: |
-        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1  # 请根据需要调整 GolangCI-Lint 版本
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
+        echo "GOPATH: $(go env GOPATH)"
+
     - name: Run go-fmt
       run: |
         gofmt -l -w .
+        echo "Go format completed."
 
     - name: Run go-imports
       run: |
         goimports -w -l .
-        
+        echo "Go imports completed."
+
     - name: Run GolangCI-Lint
       run: |
         golangci-lint run
+        echo "GolangCI-Lint completed."
