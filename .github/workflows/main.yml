@@ -1,0 +1,35 @@
+name: PR checks
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  pre-commit:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.23'  # 使用你需要的Go版本
+
+    - name: Install Go tools
+      run: |
+        go install golang.org/x/tools/cmd/goimports@latest
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
+
+    - name: Set up Python and pre-commit
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+        pip install --upgrade pip
+        pip install pre-commit
+
+    - name: Run pre-commit hooks
+      run: |
+        source venv/bin/activate
+        pre-commit run --all-files
