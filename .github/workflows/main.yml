@@ -22,6 +22,19 @@ jobs:
         go install golang.org/x/tools/cmd/goimports@latest
         go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+       node-version: '16'  # 使用你需要的 Node.js 版本
+
+    - name: Install commitlint
+      run: |
+       npm install --save-dev @commitlint/{cli,config-conventional}
+
+    - name: Lint commit messages
+      run: |
+       git log -1 --pretty=%B | npx commitlint --config @commitlint/config-conventional
+
     - name: Set up Python and pre-commit
       run: |
         python3 -m venv venv
