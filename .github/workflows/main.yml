@@ -34,6 +34,18 @@ jobs:
     - name: Lint commit messages
       run: |
        git log -1 --pretty=%B | npx commitlint
+    - name: Verify GPG signature
+      run: |
+        # Get the GPG status of the latest commit
+        GPG_STATUS=$(git log -1 --pretty=%G?)
+        
+        # Check if the commit is signed and valid
+        if [ "$GPG_STATUS" != "G" ]; then
+          echo "Commit is not signed or the signature is invalid."
+          exit 1
+        else
+          echo "Commit is signed and valid."
+        fi
 
     - name: Set up Python and pre-commit
       run: |
