@@ -10,7 +10,6 @@ trace:
   dataid: 0
   service_name: "notesBE"
   otlp:
-    host: 9.135.97.5
+    host: 127.0.0.1
     port: 4317
-    token:
     type: grpc
